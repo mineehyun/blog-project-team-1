@@ -39,7 +39,7 @@ public class UserController implements UserControllerDocs {
     @PostMapping("/signup")
     public void signUp(@RequestBody UserSignUpRequest userSignUpRequest) {
         userService.save(userSignUpRequest.toEntity());
-        System.out.println(userRepository.findByUserLoginId(userSignUpRequest.userLoginId()));
+        System.out.println(userRepository.findByUserLoginId(userSignUpRequest.userLoginId()).get(0).getUserName());
     }
 
     @PostMapping("/login")
