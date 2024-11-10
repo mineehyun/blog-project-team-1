@@ -1,5 +1,6 @@
 package doit.blog.controller.user.dto;
 
+import doit.blog.controller.user.repository.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record UserSignUpRequest(
@@ -18,4 +19,7 @@ public record UserSignUpRequest(
         @Schema(description = "전화번호", example = "010-1234-5678")
         String userPhoneNumber
 ) {
+        public User toEntity() {
+                return new User(userLoginId, userPassword, userName, userNickname, userPhoneNumber);
+        }
 }
