@@ -1,6 +1,6 @@
 package doit.blog.controller.user.dto;
 
-import doit.blog.controller.user.repository.User;
+import doit.blog.repository.user.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public record UserSignUpRequest(

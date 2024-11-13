@@ -1,9 +1,9 @@
-package doit.blog.controller.user.service;
+package doit.blog.service.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import doit.blog.controller.user.repository.User;
-import doit.blog.controller.user.repository.UserRepository;
+import doit.blog.repository.user.User;
+import doit.blog.repository.user.UserRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -21,4 +21,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public List<User> findByUserLoginId(String s) {
+        return userRepository.findByUserLoginId(s);
+    }
 }

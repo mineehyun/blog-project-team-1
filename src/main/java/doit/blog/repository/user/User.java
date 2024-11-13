@@ -1,4 +1,4 @@
-package doit.blog.controller.user.repository;
+package doit.blog.repository.user;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
