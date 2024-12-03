@@ -4,6 +4,7 @@ import doit.blog.controller.user.dto.UserInfoResponse;
 import doit.blog.controller.user.dto.UserLoginRequest;
 import doit.blog.controller.user.dto.UserIdResponse;
 import doit.blog.controller.user.dto.UserSignUpRequest;
+import doit.blog.controller.user.exceptions.InvalidLoginIdException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -35,7 +36,7 @@ interface UserControllerDocs {
     UserIdResponse login(
             @Schema(description = "로그인 정보", implementation = UserLoginRequest.class)
             UserLoginRequest userLoginRequest
-    );
+    ) throws InvalidLoginIdException;
 
     @Operation(summary = "유저 정보 조회", description = "유저 정보를 조회한다.")
     @ApiResponse(responseCode = "200", description = "유저 정보 조회 성공", useReturnTypeSchema = true)

@@ -20,6 +20,10 @@ public record UserSignUpRequest(
         String userPhoneNumber
 ) {
         public User toEntity() {
-                return new User(userLoginId, userPassword, userName, userNickname, userPhoneNumber);
+                return new User(userLoginId,
+                        userPassword,
+                        userName,
+                        userNickname,
+                        userPhoneNumber);
         }
 }

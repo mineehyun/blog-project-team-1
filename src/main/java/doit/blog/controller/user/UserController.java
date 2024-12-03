@@ -4,7 +4,8 @@ import doit.blog.controller.user.dto.UserInfoResponse;
 import doit.blog.controller.user.dto.UserLoginRequest;
 import doit.blog.controller.user.dto.UserIdResponse;
 import doit.blog.controller.user.dto.UserSignUpRequest;
-import doit.blog.repository.user.UserRepository;
+import doit.blog.controller.user.exceptions.InvalidLoginIdException;
+import doit.blog.repository.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import doit.blog.service.user.UserService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -25,11 +28,13 @@ public class UserController implements UserControllerDocs {
     @PostMapping("/validate")
     public ResponseEntity<String> checkDuplicateId(@RequestParam String id) {
         if(userService.checkDuplicateId(id)){
-            System.out.println("duplicate");
-            return ResponseEntity.status(400).body("이미 존재하는 아이디입니다.");
+            return ResponseEntity.status(409).body("이미 존재하는 아이디입니다.");
+        }
+        if (userService.checkValidFormat(id))
+        {
+            return ResponseEntity.status(409).body("유효하지 않은 아이디 형식입니다. 영문자와 숫자만 사용해 주세요.");
         }
         else {
-            System.out.println("success");
             return ResponseEntity.status(200).body("사용할 수 있는 아이디입니다.");
         }
     }
@@ -37,12 +42,20 @@ public class UserController implements UserControllerDocs {
     @PostMapping("/signup")
     public void signUp(@RequestBody UserSignUpRequest userSignUpRequest) {
         userService.save(userSignUpRequest.toEntity());
-        System.out.println(userService.findByUserLoginId(userSignUpRequest.userLoginId()).get(0).getUserName());
     }
 
     @PostMapping("/login")
-    public UserIdResponse login(@RequestBody UserLoginRequest userLoginRequest) {
-        return null;
+    public UserIdResponse login(@RequestBody UserLoginRequest userLoginRequest) throws InvalidLoginIdException {
+        List<User> findUsers = userService.findByUserLoginId(userLoginRequest.userLoginId());
+
+        if (findUsers.isEmpty())
+        {
+            throw new InvalidLoginIdException("존재하지 않는 사용자입니다.");
+        }
+        else {
+            ResponseEntity.status(200).body(findUsers.get(0).getUserId());
+            return new UserIdResponse(findUsers.get(0).getUserId());
+        }
     }
 
     @GetMapping("/{userId}")

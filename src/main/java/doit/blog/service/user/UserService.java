@@ -1,6 +1,7 @@
 package doit.blog.service.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import doit.blog.repository.user.User;
 import doit.blog.repository.user.UserRepository;
@@ -23,5 +24,9 @@ public class UserService {
 
     public List<User> findByUserLoginId(String s) {
         return userRepository.findByUserLoginId(s);
+    }
+
+    public boolean checkValidFormat(String id) {
+        return !(id.matches("^[a-zA-Z0-9]*$") && id.length() >= 5 && id.length() < 30);
     }
 }
